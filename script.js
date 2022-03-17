@@ -62,6 +62,9 @@ const resetInputValues = (inputsArray) => {
 };
 
 const addNews = ({ img, title, description, id, createdAt}) => {
+
+  console.log('Adicionando noticia', id)
+
   newsContainer.innerHTML +=
     `
       <li class="new">
@@ -79,7 +82,7 @@ const addNews = ({ img, title, description, id, createdAt}) => {
       </li>
     `
 
-  getNews();
+  setRemoveNewsEvent();
 };
 
 const setLocalStorage = (newObj) => {
@@ -90,24 +93,21 @@ const setLocalStorage = (newObj) => {
 }
 
 const checkLocalStorage = () => {
+  newsContainer.innerHTML = '';
   const localStorageNews = JSON.parse(localStorage.getItem('newsData')) || [];
-  console.log('Noticias', localStorageNews)
   localStorageNews.forEach(news => addNews(news));
 }
 
-const getNews = () => {
+const setRemoveNewsEvent = () => {
   const removeNews = getTags('.new--action', true);
 
   removeNews.forEach(news => {
     news.addEventListener('click', () => {
-      location.reload();
       handleDeleteNews(news.dataset.newsId);
     })
   })
 
 }
-
-
 
 const handleDeleteNews = (id) => {
   const localStorageNews = JSON.parse(localStorage.getItem('newsData'));
