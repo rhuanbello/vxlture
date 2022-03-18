@@ -1,74 +1,248 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&family=Roboto:wght@100;300;500;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Lexend+Deca:wght@400;500&display=swap');
 * {
     margin: 0;
     padding: 0;
     border: none;
     box-sizing: border-box;
-    font-family: "Lato", sans-serif;
+    font-family: 'Lexend Deca', sans-serif;
+
 }
 
 a {
     text-decoration: none;
+
 }
 
 :root {
-  --primary-color: #EE0D0D;
-  --dark: #1E1E26;
+  --primary-color: #8257E6;
+
+  --dark: #13131F;
   --light: #F1F1F1;
+
+  --games: #D72337;
+  --filmes: #3BB4B4;
+  --animes: #D241a5;
   --gap: 40px;
 
 }
 
 body {
-  background: #14141C;
+  background: var(--dark);
   color: var(--light);
+  min-height: 100vh;
   
 }
 
-header {
-  background-color: var(--dark);
+body > header {
   position: sticky;
   top: 0;
+  z-index: 2;
+  background-color: var(--dark);
+  /* height: 15vh; */
 
 }
 
 header > div {
   width: 85vw;
   margin: 0 auto;
+  height: 100%;
 
 }
 
-header div div {
-  width: 200px;
+nav.menu {
+  display: flex;
+  gap: 20px;
+  padding: 25px 0;
 
 }
 
-header img {
+nav.menu a {
+  display: grid;
+  place-items: center;
+  margin-right: auto;
+
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+
+  padding: 5px 15px;
+  border-radius: 7px;
+
+  background: var(--primary-color);
+  color: var(--dark);
+
+  transition: .5s;
+}
+
+nav.menu a:hover {
+  background: var(--dark);
+  color: var(--primary-color);
+
+}
+
+nav.menu img {
+  width: 150px;
+}
+
+.menu--nav {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  border: 0;
+  background: 0;
+  color: var(--light);
+  cursor: pointer;
+  position: relative;
+
+}
+
+.menu--nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -5px;
+  height: 2px;
+  width: 0;
+  background-color: var(--primary-color);
+  opacity: 0;
+  transition: .3s;
+  transform: translateX(-5px);
+
+}
+
+.menu--nav:hover::after {
+  opacity: 1;
+  width: 120%;
+  transform: translateX(0);
+
+}
+
+section.banner {
   width: 100%;
+  position: relative;
+  height: 45vh;
+
+
+}
+
+section.banner img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: cover;
+  opacity: 0.7;
+
+}
+
+section.banner > div {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 85vw;
+  height: 100%;
+
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+
+}
+
+section.banner > div span {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--games);
+
+}
+
+section.banner > div h3 {
+  font-size: 36px;
+  width: 60%;
+  font-weight: 500;
+
+}
+
+section.banner > div p {
+  font-family: 'Inter';
+
+}
+
+section.grid--container {
+  width: 100%;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+
+}
+
+section.grid--container > div {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  margin: 50px 0;
+
+}
+
+
+section.grid--container > div button {
+  cursor: pointer;
+  background-color: var(--dark);
+  width: 25px;
+  height: 25px;
+  border: 1px solid var(--primary-color);
+  transition: .3s;
   
 }
 
+section.grid--container > div:hover > button {
+  background-color: var(--primary-color);
+
+}
+
+section.grid--container div.active-grid > button {
+  background-color: var(--primary-color);
+
+}
+
+main {
+  min-height: 85vh;
+
+}
+
 .news {
-    padding: var(--gap) 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    width: 85vw;
-    margin: 0 auto;
-    align-items: flex-start;
-    gap: var(--gap);
-    list-style: none;
+  padding: var(--gap) 0;
+  display: grid;
+  width: 85vw;
+  margin: 0 auto;
+  align-items: flex-start;
+  gap: var(--gap);
+  list-style: none;
+  height: 100%;
     
 }
 
-.new {
-    display: grid;
-    gap: 10px;
-    position: relative;
+.grid--container-2 {
+  grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+
+}
+.grid--container-3 {
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 
 }
 
-.new--action {
+.grid--container-4 {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+}
+
+.new {
+  display: grid;
+  gap: 10px;
+  position: relative;
+
+}
+
+.news--action {
   position: absolute;
   opacity: 0;
   display: grid;
@@ -84,7 +258,7 @@ header img {
 
 }
 
-.new:hover .new--action {
+.new:hover .news--action {
   opacity: 1;
   cursor: pointer;
 
@@ -92,34 +266,42 @@ header img {
 
 .new div {
   overflow: hidden;
+  border-radius: 7px;
 
 }
 
 .new--img {
-    transition: transform .2s ease-in;
+  transition: transform .2s ease-in;
 }
 
 .new .new--img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-radius: 7px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 
 .new .new--img:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
-.new .new--title {
+.new .news--category {
+  color: var(--filmes);
+  font-weight: 500;
+  font-size: 16px;
 
-    font-weight: 700;
-    font-size: 2rem;
 }
 
-.new .new--desciption {
-    font-weight: 300;
-    font-size: 1rem;
-    text-align: justify;
+.new .news--description {
+  font-weight: 500;
+  line-height: 1.5;
+  font-size: 18px;
+
+}
+
+.new .news--date {
+  font-family: 'Inter';
+  font-size: 12px;
+
 }
 
 .open-modal {
@@ -162,6 +344,7 @@ aside {
   width: 50%;
   transition: .5s;
   background: var(--light);
+  
 }
 
 /* aside::before {
@@ -183,6 +366,12 @@ aside header {
   justify-content: space-between;
   padding: 10px 20px;
   align-items: center;
+  background-color: var(--dark);
+
+}
+
+aside header h3 {
+  font-weight: 400;
 
 }
 
@@ -192,8 +381,8 @@ aside header button {
   border-radius: 50%;
   font-size: 16px;
   padding: 4px;
-  transition: .2s;
   cursor: pointer;
+  transition: .2s;
   
 }
 
@@ -213,6 +402,13 @@ aside form {
 
 aside .input-wrapper input {
   width: 100%;
+  border: 1px solid var(--primary-color);
+  padding: 10px 8px;
+  border-radius: 4px;
+  background: var(--dark);
+  color: var(--light);
+  outline-color: var(--primary-color);
+
 }
 
 aside .add-news {
@@ -226,6 +422,7 @@ aside .add-news {
   cursor: pointer;
   background-color: var(--dark);
   color: var(--light);
+  transition: .2s;
 
 }
 
@@ -247,21 +444,7 @@ aside .input-wrapper {
 }
 
 aside label {
-  font-weight: 700;
-}
-
-aside input {
-  border: none;
-  border: 1px solid #FFF;
-  padding: 10px 8px;
-  border-radius: 4px;
-  background: #14141C;
-  color: #FFF;
-  outline-color: var(--primary-color);
-}
-
-iframe {
-  width: 25vw;
-  height: 25vw;
+  font-weight: 500;
+  font-size: 14px;
 
 }

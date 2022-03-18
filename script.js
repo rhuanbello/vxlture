@@ -3,9 +3,10 @@ const getTags = (tag, all) => {
 }
 
 const openModalButton = getTags('.open-modal');
-const closeModalButton = getTags('header button');
+const closeModalButton = getTags('aside header button');
 const addNewsButton = getTags('.add-news');
 const inputsValue = getTags('input', true);
+const gridContainerButtons = getTags('.grid--container div', true);
 
 const modal = getTags('aside');
 const newsContainer = getTags('.news');
@@ -21,6 +22,23 @@ const handleEventListeners = () => {
     toggleModal(false);
     resetInputValues(inputsValue)
   });
+
+  gridContainerButtons.forEach(gridButton => {
+    const innerButtons = gridButton.children;
+
+    gridButton.addEventListener('click', () => {
+      const { length } = innerButtons;
+
+      const currentGridContainerClass = newsContainer.getAttribute('class').split(' ').splice(1);
+      newsContainer.classList.remove(currentGridContainerClass);
+      newsContainer.classList.add(`grid--container-${length}`);
+
+      gridContainerButtons.forEach(button => button.classList.remove('active-grid'));
+      gridButton.classList.add('active-grid');
+
+    })
+
+  })
 }
 
 const toggleModal = (value) => {
@@ -29,16 +47,16 @@ const toggleModal = (value) => {
 
 }
 
-const setNewsData = ([title, description, img]) => {
-  const titleValue = title.value;
+const setNewsData = ([category, description, img]) => {
+  const categoryValue = category.value;
   const descriptionValue = description.value;
   const imgValue = img.value;
 
   const newObj = {
     id: Date.now().toString(36) + Math.random().toString(36).substr(2),
     img: imgValue,
-    title: checkLenght(titleValue, 25),
-    description: checkLenght(descriptionValue, 100),
+    category: categoryValue,
+    description: checkLenght(descriptionValue, 85),
     createdAt: new Date().toLocaleDateString('pt-BR', {
       weekday: 'long',
       year: 'numeric',
@@ -61,9 +79,7 @@ const resetInputValues = (inputsArray) => {
   inputsArray.forEach(input => input.value = '')
 };
 
-const addNews = ({ img, title, description, id, createdAt}) => {
-
-  console.log('Adicionando noticia', id)
+const addNews = ({ img, category, description, id, createdAt }) => {
 
   newsContainer.innerHTML +=
     `
@@ -73,17 +89,37 @@ const addNews = ({ img, title, description, id, createdAt}) => {
               src="${img}"
             >
           </div>
-          <h3 class="new--title">${title}</h3>
-          <p class="new--description">${description}</p>
-          <p>${createdAt}</p>
-          <span class="new--action" data-news-id="${id}">
+          <span class="news--category">${category}</span>
+          <h3 class="news--description">${description}</h3>
+          <p class="news--date">${createdAt}</p>
+          <span class="news--action" data-news-id="${id}">
             <i class="ri-close-line"></i>
           </span>
       </li>
     `
 
+  handleCategories();
   setRemoveNewsEvent();
 };
+
+const handleCategories = () => {
+  const categoriesNews = getTags('.news--category', true);
+
+  handleCategoriesColors(categoriesNews);
+  handleCategoriesFilter(categoriesNews);
+}
+
+const handleCategoriesColors = (categoriesNews) => {
+  categoriesNews.forEach((category) => {
+    const { innerText, style } = category;
+    style.color = `var(--${innerText.toLowerCase()})`
+  })
+}
+
+const handleCategoriesFilter = (categoriesNews) => {
+  console.log('Categorias', categoriesNews)
+
+}
 
 const setLocalStorage = (newObj) => {
   const localStorageNews = JSON.parse(localStorage.getItem('newsData')) || []
@@ -99,7 +135,7 @@ const checkLocalStorage = () => {
 }
 
 const setRemoveNewsEvent = () => {
-  const removeNews = getTags('.new--action', true);
+  const removeNews = getTags('.news--action', true);
 
   removeNews.forEach(news => {
     news.addEventListener('click', () => {
