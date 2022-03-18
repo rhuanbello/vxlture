@@ -5,8 +5,11 @@ const getTags = (tag, all) => {
 const openModalButton = getTags('.open-modal');
 const closeModalButton = getTags('aside header button');
 const addNewsButton = getTags('.add-news');
-const inputsValue = getTags('input', true);
 const gridContainerButtons = getTags('.grid--container div', true);
+const categoriesContainer = getTags('.menu--categories');
+const menuItems = getTags('.menu--categories button', true);
+
+const inputsValue = getTags('input', true);
 
 const modal = getTags('aside');
 const newsContainer = getTags('.news');
@@ -29,7 +32,7 @@ const handleEventListeners = () => {
     gridButton.addEventListener('click', () => {
       const { length } = innerButtons;
 
-      const currentGridContainerClass = newsContainer.getAttribute('class').split(' ').splice(1);
+      const currentGridContainerClass = newsContainer.getAttribute('class').split(' ').splice(1)[0];
       newsContainer.classList.remove(currentGridContainerClass);
       newsContainer.classList.add(`grid--container-${length}`);
 
@@ -39,6 +42,14 @@ const handleEventListeners = () => {
     })
 
   })
+
+  // menuItems.forEach((category) => {
+  //   category.addEventListener('click', () => {
+  //     handleCategoriesFilter(category.innerText)
+  //     console.log('Cliquei', category.innerText)
+  //   })
+  // })
+ 
 }
 
 const toggleModal = (value) => {
@@ -83,7 +94,7 @@ const addNews = ({ img, category, description, id, createdAt }) => {
 
   newsContainer.innerHTML +=
     `
-      <li class="new">
+      <li class="new ">
           <div>
             <img class="new--img"
               src="${img}"
@@ -106,7 +117,7 @@ const handleCategories = () => {
   const categoriesNews = getTags('.news--category', true);
 
   handleCategoriesColors(categoriesNews);
-  handleCategoriesFilter(categoriesNews);
+  handleCategoriesFilter();
 }
 
 const handleCategoriesColors = (categoriesNews) => {
@@ -116,8 +127,20 @@ const handleCategoriesColors = (categoriesNews) => {
   })
 }
 
-const handleCategoriesFilter = (categoriesNews) => {
-  console.log('Categorias', categoriesNews)
+const handleCategoriesFilter = (categoryToFilter) => {
+  const localStorageNews = JSON.parse(localStorage.getItem('newsData')) || []
+  const categoriesList = [...new Set(localStorageNews.map(x => x.category))].sort().reverse();
+  
+  categoriesContainer.innerHTML = '';
+  categoriesList.forEach(category => {
+    categoriesContainer.innerHTML += `
+      <button class="menu--nav">${category}</button>
+    `;
+  })
+
+  // localStorageNews.filter((({ category }) => category === categoryToFilter))
+  // console.log('Filtrou', localStorageNews)
+
 
 }
 
