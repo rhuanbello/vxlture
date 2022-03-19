@@ -6,18 +6,27 @@ const openModalButton = getTags('.open-modal');
 const closeModalButton = getTags('aside header button');
 const addNewsButton = getTags('.add-news');
 const gridContainerButtons = getTags('.grid--container div', true);
-const categoriesContainer = getTags('.menu--categories');
-const menuItems = getTags('.menu--categories button', true);
+const logoAnchor = getTags('.menu a');
 
 const inputsValue = getTags('input', true);
 
 const modal = getTags('aside');
 const newsContainer = getTags('.news');
+const categoriesContainer = getTags('.menu--categories');
+const header = getTags('header');
 
 const handleEventListeners = () => {
+
   document.addEventListener('keydown', (e) => e.key === 'Escape' && toggleModal(false));
   openModalButton.addEventListener('click', () => toggleModal(true));
   closeModalButton.addEventListener('click', () => toggleModal(false));
+  logoAnchor.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 400,
+      behavior: 'smooth',
+    })
+  })
 
   addNewsButton.addEventListener('click', (e) => {
     e.preventDefault();
@@ -43,13 +52,15 @@ const handleEventListeners = () => {
 
   })
 
-  // menuItems.forEach((category) => {
-  //   category.addEventListener('click', () => {
-  //     handleCategoriesFilter(category.innerText)
-  //     console.log('Cliquei', category.innerText)
-  //   })
-  // })
- 
+  document.addEventListener('scroll', () => {
+    const { scrollY } = window;
+    if (scrollY >= 100) {
+      header.style.background = 'rgb(19, 19, 31, .9)'
+    } else {
+      header.style.background = 'var(--dark)'
+    };
+  });
+
 }
 
 const toggleModal = (value) => {
@@ -76,10 +87,10 @@ const setNewsData = ([category, description, img]) => {
     })
   }
 
-  console.log('Objeto', newObj)
-
   addNews(newObj);
   setLocalStorage(newObj);
+  setRemoveNewsEvent();
+  handleCategories();
 };
 
 const checkLenght = (value, maxLenght) => (
@@ -90,27 +101,24 @@ const resetInputValues = (inputsArray) => {
   inputsArray.forEach(input => input.value = '')
 };
 
-const addNews = ({ img, category, description, id, createdAt }) => {
-
-  newsContainer.innerHTML +=
-    `
+const addNews = ({ img, category, description, createdAt, id }) => {
+  newsContainer.insertAdjacentHTML('afterbegin', `
       <li class="new ">
-          <div>
-            <img class="new--img"
-              src="${img}"
-            >
-          </div>
-          <span class="news--category">${category}</span>
-          <h3 class="news--description">${description}</h3>
-          <p class="news--date">${createdAt}</p>
-          <span class="news--action" data-news-id="${id}">
-            <i class="ri-close-line"></i>
-          </span>
+        <div>
+          <img class="new--img"
+            src="${img}"
+            onerror="this.src='./assets/image-not-found.svg'" 
+          >
+        </div>
+        <span class="news--category">${category}</span>
+        <h3 class="news--description">${description}</h3>
+        <p class="news--date">${createdAt}</p>
+        <span class="news--action" data-news-id="${id}">
+          <i class="ri-close-line"></i>
+        </span>
       </li>
-    `
+    `)
 
-  handleCategories();
-  setRemoveNewsEvent();
 };
 
 const handleCategories = () => {
@@ -127,20 +135,32 @@ const handleCategoriesColors = (categoriesNews) => {
   })
 }
 
-const handleCategoriesFilter = (categoryToFilter) => {
-  const localStorageNews = JSON.parse(localStorage.getItem('newsData')) || []
+const handleCategoriesFilter = () => {
+  const localStorageNews = JSON.parse(localStorage.getItem('newsData')) || [];
   const categoriesList = [...new Set(localStorageNews.map(x => x.category))].sort().reverse();
-  
+
   categoriesContainer.innerHTML = '';
   categoriesList.forEach(category => {
-    categoriesContainer.innerHTML += `
+    categoriesContainer.insertAdjacentHTML('beforeend', `
       <button class="menu--nav">${category}</button>
-    `;
+    `);
   })
 
-  // localStorageNews.filter((({ category }) => category === categoryToFilter))
-  // console.log('Filtrou', localStorageNews)
+  const menuItems = getTags('.menu button', true);
 
+  menuItems.forEach((category) => {
+
+    category.addEventListener('click', () => {
+      const { innerText } = category;
+      const filteredNews = localStorageNews.filter((({ category }) => category === innerText));
+
+      if (innerText === 'Início') {
+        renderNewsOnPage();
+      } else {
+        renderNewsOnPage(filteredNews);
+      }
+    })
+  })
 
 }
 
@@ -151,10 +171,11 @@ const setLocalStorage = (newObj) => {
 
 }
 
-const checkLocalStorage = () => {
+const renderNewsOnPage = (newsToRender = JSON.parse(localStorage.getItem('newsData'))) => {
   newsContainer.innerHTML = '';
-  const localStorageNews = JSON.parse(localStorage.getItem('newsData')) || [];
-  localStorageNews.forEach(news => addNews(news));
+  newsToRender.forEach(news => addNews(news));
+  handleCategories();
+  setRemoveNewsEvent();
 }
 
 const setRemoveNewsEvent = () => {
@@ -165,7 +186,6 @@ const setRemoveNewsEvent = () => {
       handleDeleteNews(news.dataset.newsId);
     })
   })
-
 }
 
 const handleDeleteNews = (id) => {
@@ -173,11 +193,11 @@ const handleDeleteNews = (id) => {
   const newsIndex = localStorageNews.findIndex(({ id: newsId }) => newsId === id);
   localStorageNews.splice(newsIndex, 1);
   localStorage.setItem('newsData', JSON.stringify(localStorageNews));
+  renderNewsOnPage();
 
-  checkLocalStorage();
 }
 
 window.onload = () => {
-  checkLocalStorage();
   handleEventListeners();
+  renderNewsOnPage();
 };

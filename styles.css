@@ -1,15 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Lexend+Deca:wght@400;500&display=swap');
+
 * {
-    margin: 0;
-    padding: 0;
-    border: none;
-    box-sizing: border-box;
-    font-family: 'Lexend Deca', sans-serif;
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+  font-family: 'Lexend Deca', sans-serif;
 
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 
 }
 
@@ -30,6 +31,7 @@ body {
   background: var(--dark);
   color: var(--light);
   min-height: 100vh;
+  scroll-behavior: smooth;
   
 }
 
@@ -38,7 +40,6 @@ body > header {
   top: 0;
   z-index: 2;
   background-color: var(--dark);
-  /* height: 15vh; */
 
 }
 
@@ -53,6 +54,7 @@ nav.menu {
   display: flex;
   gap: 20px;
   padding: 25px 0;
+  flex-wrap: wrap;
 
 }
 
@@ -60,6 +62,7 @@ nav.menu a {
   display: grid;
   place-items: center;
   margin-right: auto;
+  cursor: pointer;
 
   font-size: 24px;
   font-weight: 500;
@@ -71,11 +74,12 @@ nav.menu a {
   background: var(--primary-color);
   color: var(--dark);
 
-  transition: .5s;
+  transition: .2s ease-in;
 }
 
 .menu--categories {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
 
 }
@@ -115,7 +119,8 @@ nav.menu img {
 
 }
 
-.menu--nav:hover::after {
+.menu--nav:hover::after, 
+.active--category::after {
   opacity: 1;
   width: 120%;
   transform: translateX(0);
@@ -135,6 +140,7 @@ section.banner img {
   height: 100%;
   position: absolute;
   object-fit: cover;
+  object-position: left bottom;
   opacity: 0.7;
 
 }
@@ -162,8 +168,8 @@ section.banner > div span {
 }
 
 section.banner > div h3 {
-  font-size: 36px;
-  width: 60%;
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  max-width: 60%;
   font-weight: 500;
 
 }
@@ -216,7 +222,7 @@ main {
 }
 
 .news {
-  padding: var(--gap) 0;
+  padding-block: 40px 100px;
   display: grid;
   width: 85vw;
   margin: 0 auto;
@@ -261,7 +267,7 @@ main {
   top: 7px;
   right: 7px;
   width: 18px;
-  font-size: 10px;
+  font-size: 14px;
   aspect-ratio: 1;
   place-items: center;
   background: var(--primary-color);
@@ -356,22 +362,9 @@ aside {
   width: 50%;
   transition: .5s;
   background: var(--light);
+  backdrop-filter: blur(3px);
   
 }
-
-/* aside::before {
-  content: "";
-  position: absolute;
-  inset: unset;
-  z-index: -10;
-
-  width: 100vw;
-  height: 100vh;
-
-  transform: translate(-25%, -25%);
-
-  background: rgb( 0 0 0 / .6); 
-} */
 
 aside header {
   display: flex;
@@ -439,7 +432,7 @@ aside .add-news {
 }
 
 aside .add-news:hover {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
   color: var(--light);
 
 
@@ -459,4 +452,48 @@ aside label {
   font-weight: 500;
   font-size: 14px;
 
+}
+
+@media (max-width: 1200px) {
+  section.grid--container {
+    display: none;
+
+  }
+
+  aside {
+    width: 85%;
+    
+  }
+
+}
+
+@media (max-width: 500px) {
+  nav.menu a {
+    margin: 0 auto;
+    width: 100%;
+    background: var(--dark);
+    color: var(--primary-color);
+  }
+
+  .menu--nav {
+    margin-left: auto;
+
+  }
+
+  .menu--categories {
+    margin-right: auto;
+
+  }
+
+  .news {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+      
+  }
+
+  section.banner > div h3 {
+    max-width: 100%;
+
+  }
+  
 }
