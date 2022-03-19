@@ -6,21 +6,52 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
-  <title>Checkpoint 1</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="index.js" defer></script>
+  <title>Vulture</title>
 </head>
 
 <body>
   <header>
     <div>
-      <div>
-        <img src="https://download.logo.wine/logo/BBC_News/BBC_News-Logo.wine.png">
-      </div>
+      <nav class="menu">
+        <a>
+          VXLTURE
+        </a>
+        <button class="menu--nav">Início</button>
+        <div class="menu--categories">
+        </div>
+      </nav>
     </div>
   </header>
+  <section class="banner">
+    <img src="assets/cover.jpg" alt="Elden Ring é a experiência definitiva da fórmula soulsborne">
+    <div>
+      <span>Games</span>
+      <h3>Elden Ring é a experiência definitiva da fórmula “soulsborne”</h3>
+      <p>quarta-feira, 26 de Janeiro de 2022</p>
+    </div>
+  </section>
   <main>
-    <ul class="news">
+    <section class="grid--container">
+      <div>
+        <button></button>
+        <button></button>
+      </div>
+      <div class="active-grid">
+        <button></button>
+        <button></button>
+        <button></button>
+      </div>
+      <div>
+        <button></button>
+        <button></button>
+        <button></button>
+        <button></button>
+      </div>
+    </section>
+
+    <ul class="news grid--container-3">
       
     </ul>
 
@@ -37,8 +68,8 @@
       </header>
       <form>
         <div class="input-wrapper">
-          <label for="title">Título</label>
-          <input id="title" type="text" placeholder="Insira o título"></input>
+          <label for="category">Categoria</label>
+          <input id="category" type="text" placeholder="Insira a categoria"></input>
         </div>
         <div class="input-wrapper">
           <label for="description">Descrição</label>
@@ -52,7 +83,6 @@
           Enviar
         </button>
       </form>
-
     </aside>
   </main>
 </body>
