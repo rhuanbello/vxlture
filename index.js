@@ -5,8 +5,10 @@ const getTags = (tag, all) => {
 const openModalButton = getTags('.open-modal');
 const closeModalButton = getTags('aside header button');
 const addNewsButton = getTags('.add-news');
+const gridContainer = getTags('.grid--container');
 const gridContainerButtons = getTags('.grid--container div', true);
 const logoAnchor = getTags('.menu a');
+const tooltip = getTags('.add-posts--tooltip');
 
 const inputsValue = getTags('input', true);
 
@@ -91,6 +93,7 @@ const setNewsData = ([category, description, img]) => {
   setLocalStorage(newObj);
   setRemoveNewsEvent();
   handleCategories();
+  renderNewsOnPage();
 };
 
 const checkLenght = (value, maxLenght) => (
@@ -171,11 +174,36 @@ const setLocalStorage = (newObj) => {
 
 }
 
+const handleTooltip = (existsNews) => {
+  tooltip.style.opacity = existsNews ? '0' : '1'
+  gridContainer.style.opacity = existsNews ? '1' : '0';
+
+}
+
+const handleFirstVisit = () => {
+  setLocalStorage({
+    category: "Games",
+    createdAt: "sexta-feira, 18 de março de 2022",
+    description: "Hogwarts Legacy será lançado no final de 2022; confira vídeo de gameplay",
+    id: "l0vuvlvbuv7vyabu1t",
+    img: "https://uploads.jovemnerd.com.br/wp-content/uploads/2022/03/hogwarts-legacy-data-trailer-760x428.jpg"
+  })
+  renderNewsOnPage();
+}
+
 const renderNewsOnPage = (newsToRender = JSON.parse(localStorage.getItem('newsData'))) => {
-  newsContainer.innerHTML = '';
-  newsToRender.forEach(news => addNews(news));
-  handleCategories();
-  setRemoveNewsEvent();
+
+  if (newsToRender === null) {
+    handleFirstVisit();
+  } else {
+    const existsNews = newsToRender.length > 0;
+    newsContainer.innerHTML = '';
+    newsToRender.forEach(news => addNews(news));
+    handleCategories();
+    setRemoveNewsEvent();
+    handleTooltip(existsNews);
+
+  }
 }
 
 const setRemoveNewsEvent = () => {
