@@ -35,6 +35,18 @@ body {
   
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+}
+
 body > header {
   position: sticky;
   top: 0;
@@ -322,15 +334,43 @@ main {
 
 }
 
+.add-posts--container {
+  display: flex;
+  gap: 15px;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+
+}
+
+.add-posts--tooltip {
+  background-color: var(--primary-color);
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 7px;
+  font-size: 14px;
+  animation: translateX--infinite .7s infinite alternate-reverse;
+
+} 
+
+@keyframes translateX--infinite {
+  from {
+    transform: translateX(-15px);
+  }
+
+  to {
+    transform: translateX(0px);
+  }
+  
+}
+
 .open-modal {
   display: grid;
   place-items: center;
   
   padding: 10px;  
-    
-  position: fixed;
-  bottom: 15px;
-  right: 15px;
 
   background: var(--primary-color);
   color: var(--light);
